@@ -1,8 +1,11 @@
 {
   "name": "change-require",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Auto Require JS Files when changed",
   "main": "index.js",
+  "repository": {
+    "url": "git@github.com:prkeshri/node-change-require.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -3,7 +3,6 @@ Auto Require JS Files when changed! No App restart required!
 How about overcoming small hurdles of server restart whenever a minor change is included in a file?
 This module does exactly that! It watches for file changes and auto requires them once any change is made!
 
-
 	    var cRequire = require('change-require');
 	    // Require and ask for manipulation
         var myModule = cRequire(myModule);
@@ -12,10 +11,12 @@ This module does exactly that! It watches for file changes and auto requires the
         myModule.myFunction(...);
 
 Note: DON'T save a reference to myFunction and call directly as:
+
         var myModule = cRequire(myModule),
         myFunction = myModule.myFunction; // X No!
 
 Also, the global require can be overridden as:
+
         require('change-require').globalise();
 
 ## Limitations:
