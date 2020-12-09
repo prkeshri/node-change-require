@@ -1,8 +1,4 @@
-# require-watch
-
 Auto Require JS Files when changed! No App restart required!
-
-[![npm downloads][downloads-image]][downloads-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage Status][coverage-image]][coverage-url]
 
 How about overcoming small hurdles of server restart whenever a minor change is included in a file?
 This module does exactly that! It watches for file changes and auto requires them once any change is made!
