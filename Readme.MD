@@ -1,14 +1,18 @@
+# require-watch
+
 Auto Require JS Files when changed! No App restart required!
+
+[![npm downloads][downloads-image]][downloads-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage Status][coverage-image]][coverage-url]
 
 How about overcoming small hurdles of server restart whenever a minor change is included in a file?
 This module does exactly that! It watches for file changes and auto requires them once any change is made!
 
 	var cRequire = require('change-require');
 	// Require and ask for manipulation
-        var myModule = cRequire(myModule);
+	var myModule = cRequire(myModule);
 
-        // Call myModule function as:
-        myModule.myFunction(...);
+	// Call myModule function as:
+	myModule.myFunction(...);
 
 Note: DON'T save a reference to myFunction and call directly as:
 
