@@ -16,36 +16,60 @@ const _resolve = function (callerFile, id) {
 };
 
 const newRequire = function (id) {
-  if (id.indexOf("\\") == -1 && id.indexOf("/") == -1) {
-    return oldRequire(path); // Native Module
+  let isResolved = id.indexOf('\\') == -1 && id.indexOf('/') == -1;
+  isResolved ||= id.indexOf('/') === 0; // Unix
+  isResolved ||= id.indexOf(':') === 1; // Windows
+
+  let mod;
+  try {
+    mod = resolve(id);
+    isResolved ||= mod.indexOf('node_modules') > -1;
+  } catch (e) {
+    debugger;
   }
-  var path = _resolve(getCallerFile(), id);
+
+  if (isResolved) {
+    return oldRequire(mod); // Native Module
+  }
+  const callerFile = getCallerFile();
+  var path = _resolve(callerFile, id);
   var cached = requireFiles[path];
   if (cached) {
     return cached;
   }
-  var contents = oldRequire(path);
-  if (
-    contents &&
-    contents.constructor &&
-    (contents.constructor.name === "Object" || typeof contents === "function")
-  ) {
-    var o = {};
-    if (typeof contents === "function") {
-      o = () => {};
+
+  try {
+    let contents = oldRequire(path);
+  } catch(e) {
+    console.log({e});
+  }
+  try {
+    let contents = oldRequire(path);
+    if (
+      contents &&
+      contents.constructor &&
+      (contents.constructor.name === "Object" || typeof contents === "function")
+    ) {
+      var o = {};
+      if (typeof contents === "function") {
+        o = () => { };
+      }
+      addToWatch(path, contents);
+      contents = new Proxy(o, {
+        get: function (target, key) {
+          return requireFiles[path][key];
+        },
+        apply: function (target, thisArg, argArray) {
+          return requireFiles[path].apply(thisArg, argArray);
+        },
+      });
     }
-    addToWatch(path, contents);
-    contents = new Proxy(o, {
-      get: function (target, key) {
-        return requireFiles[path][key];
-      },
-      apply: function (target, thisArg, argArray) {
-        return requireFiles[path].apply(thisArg, argArray);
-      },
-    });
+
+    return contents;
+  } catch (e) {
+    console.log({e})
   }
 
-  return contents;
 };
 
 Object.assign(newRequire, require);
@@ -61,6 +85,7 @@ function addToWatch(path, contents) {
     delete _cache[path];
     contents = oldRequire(path);
     requireFiles[path] = contents;
+    console.log(`=== Reloaded ${path} ===`);
   });
 }
 
